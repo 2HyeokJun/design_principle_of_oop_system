@@ -29,7 +29,7 @@ class ImportEmployeesService:
                 result.added_new_employee(new_employee)
             # 직원이 존재할 경우 직원 정보를 갱신한다
             else:
-                current_employee = maybe_an_employee
+                current_employee = Employee()
                 current_employee.set_name(employee["name"])
                 current_employee.set_starting_date(employee["starting_date"])
                 current_employee.set_role(employee["role"])
