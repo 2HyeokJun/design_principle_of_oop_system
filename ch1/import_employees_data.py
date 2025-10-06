@@ -2,18 +2,17 @@ from csv_parser_library import CSVParserLibrary
 from employee import Employee
 from import_result import ImportResult
 from ch1.types import EmployeeParsedData
+from employee_import_csv_parser import EmployeeImportCSVParser
 
 
 class ImportEmployeesService:
-    def __init__(self, employees):
+    def __init__(self, employees, parser: EmployeeImportCSVParser):
         self.employees = employees
+        self.parser = parser
 
     def import_csv(self, csv):
         result = ImportResult()
-        csv_parser = CSVParserLibrary()
-        csv_parser.set_mode(csv_parser.Mode.IGNORE_ERRORS)
-        csv_parser.set_object_type(EmployeeParsedData)
-        imported_list = csv_parser.parse(csv)
+        imported_list = self.parser.parse(csv)
 
         for employee in imported_list:
             maybe_an_employee = self.employees.find_by_email(employee["email"])
