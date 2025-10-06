@@ -28,3 +28,6 @@ class Employee:
 
     def set_role(self, role):
         self.role = role
+
+    def wants_any_email_updates(self):
+        return False
