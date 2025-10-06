@@ -1,9 +1,9 @@
 class Employee:
-    def __init__(self):
-        self.name = None
-        self.email = None
-        self.starting_date = None
-        self.role = None
+    def __init__(self, name, email, starting_date, role):
+        self.name = name
+        self.email = email
+        self.starting_date = starting_date
+        self.role = role
 
     def get_name(self):
         return self.name
