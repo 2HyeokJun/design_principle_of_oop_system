@@ -23,5 +23,5 @@ class AddEmployeeToOfferingService:
             raise ValueError()
         
         # 직원을 오퍼링에 추가한다.
-        offering.add_employee(employee)
+        offering.enroll(employee)
 
