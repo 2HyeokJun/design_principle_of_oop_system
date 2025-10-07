@@ -19,7 +19,7 @@ def use_offering_entity():
 
     # 현재 오퍼링에 빈 자리가 있는가?
     if offering.get_available_spots() > 0:
-        offering.add_employee(employee_that_wants_to_participate)
+        offering.enroll(employee_that_wants_to_participate)
 
 if __name__ == "__main__":
     use_offering_entity()
