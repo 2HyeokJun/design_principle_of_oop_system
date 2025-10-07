@@ -25,6 +25,18 @@ class Offering:
 
     def get_available_spots(self) -> int:
         return self.available_spots
+    
+    def has_available_spots(self):
+        return self.get_available_spots() > 0
+    
+    def get_training(self):
+        return self.training
+    
+    def is_employee_registered(self, employee: Employee):
+        for e in self.employees:
+            if e == employee:
+                return True
+        return False
 
     
 
