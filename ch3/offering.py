@@ -15,14 +15,17 @@ class Offering:
         self.max_number_of_attendees = max_number_of_attendees
         self.available_spots = available_spots
 
-    def get_employees(self) -> list:
-        return self.employees
-    
+    def add_employee(self, employee: Employee):
+        if self.available_spots == 0:
+            raise ValueError
+        # 직원을 오퍼링에 추가한다
+        self.employees.append(employee)
+        # 잔여 허용 인원을 하나 줄인다
+        self.available_spots -= 1
+
     def get_available_spots(self) -> int:
         return self.available_spots
-    
-    def set_available_spots(self, available_spots: int) -> None:
-        self.available_spots = available_spots
+
     
 
         

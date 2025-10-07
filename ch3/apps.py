@@ -18,11 +18,8 @@ def use_offering_entity():
     employee_that_wants_to_participate = Employee()
 
     # 현재 오퍼링에 빈 자리가 있는가?
-    if offering.get_available_spots() > 0: 
-        # 직원을 오퍼링에 추가한다
-        offering.get_employees().append(employee_that_wants_to_participate)
-        # 잔여 허용 인원을 하나 줄인다
-        offering.set_available_spots(offering.get_available_spots() - 1)
+    if offering.get_available_spots() > 0:
+        offering.add_employee(employee_that_wants_to_participate)
 
 if __name__ == "__main__":
     use_offering_entity()
