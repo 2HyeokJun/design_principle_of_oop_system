@@ -1,7 +1,6 @@
 from ch4.message import Message
 from ch4.message_bot import MessageBot
 from ch4.email_sender import EmailSender
-from ch4.user_preferences import UserPreferences
 from ch4.repository.message_repository import MessageRepository
 
 
@@ -11,12 +10,10 @@ class MessageSender:
         message_bot: MessageBot,
         repository: MessageRepository,
         email_sender: EmailSender,
-        user_prefs: UserPreferences,
     ):
         self.message_bot = message_bot
         self.repository = repository
         self.email_sender = email_sender
-        self.user_prefs = user_prefs
 
     def send_messages(self) -> None:
         messages_to_be_sent = self.repository.get_messages_to_be_sent()
@@ -24,7 +21,9 @@ class MessageSender:
         # 송신해야 하는 모든 메시지에 대해
         for message_to_be_sent in messages_to_be_sent:
             self.message_bot.send(message_to_be_sent)
-            if self.user_prefs.send_via_email(message_to_be_sent.get_email()):
+            if self.email_sender.is_user_prefer_to_send_via_email(
+                message_to_be_sent.get_email()
+            ):
                 self.email_sender.send_message(message_to_be_sent)
 
             # 메시지를 전송 완료로 표시한다.
