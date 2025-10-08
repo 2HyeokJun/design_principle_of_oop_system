@@ -53,16 +53,18 @@ security_cop = BadgeForTrainings(
 )
 
 
-class FiveTrainings(BadgeRule):
-    def __init__(self):
-        super().__init__()
+class BadgeForQuantity(BadgeRule):
+    def __init__(self, quantity: int, badge_to_give: Badge):
+        self.quantity = quantity
+        self._badge_to_give = badge_to_give
 
     def give(self, employee: Employee) -> bool:
         trainings_taken: TrainingsTaken = employee.get_trainings_taken()
-        return trainings_taken.total_trainings() >= 5
+        return trainings_taken.total_trainings() >= self.quantity
 
     def badge_to_give(self) -> Badge:
-        return Badge.FIVE_TRAININGS
+        return self._badge_to_give
 
 
-# ... 기타 다른 배지에 대해서도 마찬가지
+five_trainings = BadgeForQuantity(5, Badge.FIVE_TRAININGS)
+ten_trainings = BadgeForQuantity(10, Badge.TEN_TRAININGS)
