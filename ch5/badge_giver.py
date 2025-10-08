@@ -8,10 +8,15 @@ class BadgeGiver:
         pass
 
     def give(self, employee: Employee):
-        self.per_training(employee)
-        self.per_quantity(employee)
+        BadgesForTrainings().give(employee)
+        BadgesForQuantity().give(employee)
 
-    def per_training(self, employee: Employee) -> None:
+
+class BadgesForTrainings:
+    def __init__(self):
+        pass
+
+    def give(self, employee: Employee):
         trainings_taken: TrainingsTaken = employee.get_trainings_taken()
         # 품질 관련 교육을 받은 경우 배지를 받는다.
         if trainings_taken.has("TESTING") and trainings_taken.has("CODE_QUALITY"):
@@ -23,7 +28,15 @@ class BadgeGiver:
             self.assign(employee, Badge.SECURITY_COP)
         # ...다른 배지 수여 규칙들...
 
-    def per_quantity(self, employee: Employee) -> None:
+    def assign(self, employee: Employee, badge: Badge):
+        employee.win_badge(badge)
+
+
+class BadgesForQuantity:
+    def __init__(self):
+        pass
+
+    def give(self, employee: Employee) -> None:
         trainings_taken: TrainingsTaken = employee.get_trainings_taken()
         if trainings_taken.total_trainings() >= 5:
             self.assign(employee, Badge.FIVE_TRAININGS)
