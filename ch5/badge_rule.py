@@ -25,30 +25,32 @@ class BadgeRule(ABC):
         pass
 
 
-class QualityHero(BadgeRule):
-    def __init__(self):
-        super().__init__()
+class BadgeForTrainings(BadgeRule):
+    def __init__(self, trainings: list[str], badge_to_give: Badge):
+        self.trainings = trainings
+        self._badge_to_give = badge_to_give
 
     def give(self, employee: Employee) -> bool:
-        trainings_taken: TrainingsTaken = employee.get_trainings_taken()
-        return trainings_taken.has("TESTING") and trainings_taken.has("CODE_QUALITY")
+        trainings_taken = employee.get_trainings_taken()
+        # 모든 교육 과정을 이수했으면 True, 그렇지 않으면 False를 반환한다.
+        for training in self.trainings:
+            if not trainings_taken.has(training):
+                return False
+        return True
 
+    # 수여할 배지를 반환한다.
     def badge_to_give(self) -> Badge:
-        return Badge.QUALITY_HERO
+        return self._badge_to_give
 
 
-class SecurityCop(BadgeRule):
-    def __init__(self):
-        super().__init__()
+quality_hero = BadgeForTrainings(
+    trainings=["TESTING", "CODE_QUALITY"], badge_to_give=Badge.QUALITY_HERO
+)
 
-    def give(self, employee: Employee) -> bool:
-        trainings_taken: TrainingsTaken = employee.get_trainings_taken()
-        return trainings_taken.has("SECURITY_101") and trainings_taken.has(
-            "SECURITY_FOR_MOBILE_DEVS"
-        )
-
-    def badge_to_give(self) -> Badge:
-        return Badge.SECURITY_COP
+security_cop = BadgeForTrainings(
+    trainings=["SECURITY_101", "SECURITY_FOR_MOBILE_DEVS"],
+    badge_to_give=Badge.SECURITY_COP,
+)
 
 
 class FiveTrainings(BadgeRule):
@@ -60,4 +62,7 @@ class FiveTrainings(BadgeRule):
         return trainings_taken.total_trainings() >= 5
 
     def badge_to_give(self) -> Badge:
-        return Badge.SECURITY_COP
+        return Badge.FIVE_TRAININGS
+
+
+# ... 기타 다른 배지에 대해서도 마찬가지
