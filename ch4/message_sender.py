@@ -1,4 +1,4 @@
-from ch4.bot import Bot
+from ch4.bot.bot import Bot
 from ch4.message import Message
 from ch4.user_directory import UserDirectory
 from ch4.repository.message_repository import MessageRepository
