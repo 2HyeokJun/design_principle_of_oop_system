@@ -25,39 +25,68 @@ class BadgeRule(ABC):
         pass
 
 
-class QualityHero(BadgeRule):
+class BadgeRuleFactory(ABC):
+    @abstractmethod
+    def create_rules(self) -> list[BadgeRule]:
+        pass
+
+
+class BadgeForTrainings(BadgeRule):
+    def __init__(self, trainings: list[str], badge_to_give: Badge):
+        self.trainings = trainings
+        self._badge_to_give = badge_to_give
+
+    def give(self, employee: Employee) -> bool:
+        trainings_taken = employee.get_trainings_taken()
+        # 모든 교육 과정을 이수했으면 True, 그렇지 않으면 False를 반환한다.
+        for training in self.trainings:
+            if not trainings_taken.has(training):
+                return False
+        return True
+
+    # 수여할 배지를 반환한다.
+    def badge_to_give(self) -> Badge:
+        return self._badge_to_give
+
+
+quality_hero = BadgeForTrainings(
+    trainings=["TESTING", "CODE_QUALITY"], badge_to_give=Badge.QUALITY_HERO
+)
+
+security_cop = BadgeForTrainings(
+    trainings=["SECURITY_101", "SECURITY_FOR_MOBILE_DEVS"],
+    badge_to_give=Badge.SECURITY_COP,
+)
+
+
+class BadgeForTrainingsFactory(BadgeRuleFactory):
     def __init__(self):
-        super().__init__()
+        pass
+
+    def create_rules(self) -> list[BadgeRule]:
+        return [quality_hero, security_cop]
+
+
+class BadgeForQuantity(BadgeRule):
+    def __init__(self, quantity: int, badge_to_give: Badge):
+        self.quantity = quantity
+        self._badge_to_give = badge_to_give
 
     def give(self, employee: Employee) -> bool:
         trainings_taken: TrainingsTaken = employee.get_trainings_taken()
-        return trainings_taken.has("TESTING") and trainings_taken.has("CODE_QUALITY")
+        return trainings_taken.total_trainings() >= self.quantity
 
     def badge_to_give(self) -> Badge:
-        return Badge.QUALITY_HERO
+        return self._badge_to_give
 
 
-class SecurityCop(BadgeRule):
+five_trainings = BadgeForQuantity(5, Badge.FIVE_TRAININGS)
+ten_trainings = BadgeForQuantity(10, Badge.TEN_TRAININGS)
+
+
+class BadgeForQuantitysFactory(BadgeRuleFactory):
     def __init__(self):
-        super().__init__()
+        pass
 
-    def give(self, employee: Employee) -> bool:
-        trainings_taken: TrainingsTaken = employee.get_trainings_taken()
-        return trainings_taken.has("SECURITY_101") and trainings_taken.has(
-            "SECURITY_FOR_MOBILE_DEVS"
-        )
-
-    def badge_to_give(self) -> Badge:
-        return Badge.SECURITY_COP
-
-
-class FiveTrainings(BadgeRule):
-    def __init__(self):
-        super().__init__()
-
-    def give(self, employee: Employee) -> bool:
-        trainings_taken: TrainingsTaken = employee.get_trainings_taken()
-        return trainings_taken.total_trainings() >= 5
-
-    def badge_to_give(self) -> Badge:
-        return Badge.SECURITY_COP
+    def create_rules(self) -> list[BadgeRule]:
+        return [five_trainings, ten_trainings]
