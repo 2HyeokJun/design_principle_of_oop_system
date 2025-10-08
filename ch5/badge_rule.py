@@ -25,6 +25,12 @@ class BadgeRule(ABC):
         pass
 
 
+class BadgeRuleFactory(ABC):
+    @abstractmethod
+    def create_rules(self) -> list[BadgeRule]:
+        pass
+
+
 class BadgeForTrainings(BadgeRule):
     def __init__(self, trainings: list[str], badge_to_give: Badge):
         self.trainings = trainings
@@ -53,6 +59,14 @@ security_cop = BadgeForTrainings(
 )
 
 
+class BadgeForTrainingsFactory(BadgeRuleFactory):
+    def __init__(self):
+        pass
+
+    def create_rules(self) -> list[BadgeRule]:
+        return [quality_hero, security_cop]
+
+
 class BadgeForQuantity(BadgeRule):
     def __init__(self, quantity: int, badge_to_give: Badge):
         self.quantity = quantity
@@ -68,3 +82,11 @@ class BadgeForQuantity(BadgeRule):
 
 five_trainings = BadgeForQuantity(5, Badge.FIVE_TRAININGS)
 ten_trainings = BadgeForQuantity(10, Badge.TEN_TRAININGS)
+
+
+class BadgeForQuantitysFactory(BadgeRuleFactory):
+    def __init__(self):
+        pass
+
+    def create_rules(self) -> list[BadgeRule]:
+        return [five_trainings, ten_trainings]
