@@ -1,0 +1,9 @@
+import enum
+
+
+class Badge(enum.Enum):
+    QUALITY_HERO = "QUALTITY_HERO"
+    SECURITY_COP = "SECURITY_COP"
+    FIVE_TRAININGS = "FIVE_TRAININGS"
+    TEN_TRAININGS = "TEN_TRAININGS"
+    ON_FIRE = "ON_FIRE"
